@@ -1,10 +1,10 @@
 [package]
 name = "hugo-build"
-version = "0.115.1-beta2"
+version = "0.115.1-beta3"
 edition = "2021"
 authors = ["Jens Walter <jens@apimeister.com>"]
 license = "Apache-2.0"
-keywords = ["hugo"]
+keywords = ["hugo","build-dependencies"]
 repository = "https://github.com/apimeister/hugo-build-rs/"
 documentation = "https://docs.rs/hugo_build"
 description = "A wrapper around the hugo binary to proving building capabilities."

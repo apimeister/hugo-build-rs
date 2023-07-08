@@ -13,8 +13,11 @@ mod test;
 
 #[derive(Debug, Default, Clone)]
 pub struct HugoBuilder {
+    /// path to the hugo binary
     binary: PathBuf,
+    /// source directory
     input_path: Option<PathBuf>,
+    /// target directory
     output_path: Option<PathBuf>,
 }
 
@@ -35,6 +38,9 @@ fn fix_permissions(local_file: &File) {
     local_file.set_permissions(permissions).unwrap();
 }
 
+/// initialises a hugo build
+/// 
+/// fetches the binary from github if required
 pub fn init() -> HugoBuilder {
     // fetch binary from github
     let url = format!("https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_{ARCH}.tar.gz");
@@ -81,22 +87,39 @@ pub fn init() -> HugoBuilder {
 }
 
 impl HugoBuilder {
+    /// defines source directory for the hugo build
     pub fn with_input(self, path: PathBuf) -> HugoBuilder {
         let mut cpy = self;
         cpy.input_path = Some(path);
         cpy
     }
+    /// defines target directory for the hugo build
     pub fn with_output(self, path: PathBuf) -> HugoBuilder {
         let mut cpy = self;
         cpy.output_path = Some(path);
         cpy
     }
     pub fn build(self) -> Result<Output, std::io::Error> {
+        let base = std::env::var("CARGO_MANIFEST_DIR").unwrap();
+        let input = match self.input_path {
+            None => {
+                println!("cargo:warning=no input path set, using ./site");
+                Path::new(&base).join("site")
+            }
+            Some(val) => val,
+        };
+        let output = match self.output_path {
+            None => {
+                println!("cargo:warning=no output path set, using ./target/site");
+                Path::new(&base).join("target").join("site")
+            }
+            Some(val) => val,
+        };
         Command::new(self.binary)
             .arg("-s")
-            .arg(self.input_path.unwrap())
+            .arg(input)
             .arg("-d")
-            .arg(self.output_path.unwrap())
+            .arg(output)
             .output()
     }
 }
