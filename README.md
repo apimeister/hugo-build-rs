@@ -1,8 +1,8 @@
 A wrapper around the hugo binary to proving building capabilities.
 
-This crate has the hugo binaries embedded, so no external dependencies are pulled during build.
+This crate downloads the hugo binaries on demand during build. So the first build needs connectivity to github.
 
-The version number reflect the hugo version embedded.
+The version number reflects the hugo version embedded.
 
 # Usage
 

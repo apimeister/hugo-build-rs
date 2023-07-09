@@ -28,7 +28,7 @@ static ARCH: &str = "Linux-64bit";
 #[cfg(target_os = "windows")]
 static ARCH: &str = "windows-amd64";
 
-static VERSION: &str = "0.115.1";
+static VERSION: &str = "0.115.2";
 
 #[cfg(not(target_os = "windows"))]
 fn fix_permissions(local_file: &File) {
