@@ -51,12 +51,10 @@ pub fn init() -> HugoBuilder {
     let mut binary_name = out_path.join("hugo");
 
     // check for already downloaded binary
-    let hugo_bins = out_path
-        .read_dir()
-        .expect("reading OUT_DIR")
+    let hugo_bins = out_path.read_dir().expect("reading OUT_DIR");
+    let hugo_bins = hugo_bins
         .filter(|a| {
             if let Ok(f) = a {
-                println!("{:?}", f);
                 f.file_name().eq("hugo")
             } else {
                 false
@@ -93,8 +91,6 @@ pub fn init() -> HugoBuilder {
             .split_once('-')
             .unwrap()
             .0;
-        println!("{version}");
-        println!("{VERSION}");
         if version != VERSION {
             println!("cargo:warning=Hugo Build Script - Used Version: {version} - hugo-build-rs recommended Version: {VERSION}");
             println!("cargo:warning=run \"cargo clean\" to remove cached version and download recommended one");
