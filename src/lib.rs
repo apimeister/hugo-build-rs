@@ -44,21 +44,17 @@ fn fix_permissions(local_file: &File) {
 pub fn init() -> HugoBuilder {
     // fetch binary from github
     let url = format!("https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_{ARCH}.tar.gz");
-    let out_dir = std::env::var("OUT_DIR").unwrap();
-    let out_path = Path::new(&out_dir);
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
+    let release_profile = std::env::var("PROFILE").unwrap();
+    let path = format!("{manifest_dir}/target/{release_profile}");
+    let out_path = Path::new(&path);
     let mut binary_name = out_path.join("hugo");
 
     // check for already downloaded binary
-    let mut binary_exists = false;
-    let result = out_path.read_dir().expect("reading OUT_DIR");
-    for file in result {
-        let entry = file.unwrap();
-        if entry.file_name().to_string_lossy().contains("hugo") {
-            binary_exists = true;
-            binary_name = entry.path();
-        }
-    }
-    if !binary_exists {
+    let hugo_bins = out_path.read_dir().expect("reading OUT_DIR")
+    .filter(|a | if let Ok(f) = a { println!("{:?}",f); f.file_name().eq("hugo") } else {false} )
+    .count();
+    if hugo_bins == 0 {
         // download fresh binary
         let result = reqwest::blocking::get(url).unwrap();
         let bytes = result.bytes().unwrap();
@@ -79,7 +75,22 @@ pub fn init() -> HugoBuilder {
                 fix_permissions(&local_file);
             }
         }
+    } else {
+        let version = Command::new(&binary_name)
+            .arg("version")
+            .output().unwrap();
+        let version = std::str::from_utf8(&version.stdout).unwrap();
+        let version = version.strip_prefix("hugo v").unwrap().split_once('-').unwrap().0;
+        println!("{version}");
+        println!("{VERSION}");
+        if version != VERSION { 
+            println!("cargo:warning=Hugo Build Script - Used Version: {version} - hugo-build-rs recommended Version: {VERSION}");
+            println!("cargo:warning=run \"cargo clean\" to remove cached version and download recommended one");
+        }
     }
+
+
+
     HugoBuilder {
         binary: binary_name,
         ..Default::default()
