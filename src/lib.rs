@@ -39,7 +39,7 @@ fn fix_permissions(local_file: &File) {
 }
 
 /// initialises a hugo build
-/// 
+///
 /// fetches the binary from github if required
 pub fn init() -> HugoBuilder {
     // fetch binary from github
@@ -51,9 +51,18 @@ pub fn init() -> HugoBuilder {
     let mut binary_name = out_path.join("hugo");
 
     // check for already downloaded binary
-    let hugo_bins = out_path.read_dir().expect("reading OUT_DIR")
-    .filter(|a | if let Ok(f) = a { println!("{:?}",f); f.file_name().eq("hugo") } else {false} )
-    .count();
+    let hugo_bins = out_path
+        .read_dir()
+        .expect("reading OUT_DIR")
+        .filter(|a| {
+            if let Ok(f) = a {
+                println!("{:?}", f);
+                f.file_name().eq("hugo")
+            } else {
+                false
+            }
+        })
+        .count();
     if hugo_bins == 0 {
         // download fresh binary
         let result = reqwest::blocking::get(url).unwrap();
@@ -76,20 +85,21 @@ pub fn init() -> HugoBuilder {
             }
         }
     } else {
-        let version = Command::new(&binary_name)
-            .arg("version")
-            .output().unwrap();
+        let version = Command::new(&binary_name).arg("version").output().unwrap();
         let version = std::str::from_utf8(&version.stdout).unwrap();
-        let version = version.strip_prefix("hugo v").unwrap().split_once('-').unwrap().0;
+        let version = version
+            .strip_prefix("hugo v")
+            .unwrap()
+            .split_once('-')
+            .unwrap()
+            .0;
         println!("{version}");
         println!("{VERSION}");
-        if version != VERSION { 
+        if version != VERSION {
             println!("cargo:warning=Hugo Build Script - Used Version: {version} - hugo-build-rs recommended Version: {VERSION}");
             println!("cargo:warning=run \"cargo clean\" to remove cached version and download recommended one");
         }
     }
-
-
 
     HugoBuilder {
         binary: binary_name,
