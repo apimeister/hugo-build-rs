@@ -6,6 +6,12 @@ The version number reflects the hugo version embedded.
 
 # Usage
 
+Add the depenendy to your `cargo.toml`.
+
+```
+cargo add --build hugo-build
+```
+
 Add the following lines to you `build.rs` file.
 This will build a hugo page from the `site` directory and put the output into the `target` directory.
 
