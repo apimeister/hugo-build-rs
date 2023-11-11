@@ -1,0 +1,19 @@
+name: daily_version_check
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Cargo Test
+      uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: -q
+    - name: Build release artifact
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --release
