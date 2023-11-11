@@ -39,13 +39,16 @@ fn fix_permissions(local_file: &File) {
 }
 
 /// initialises a hugo build
-/// 
+///
 /// fetches the binary from github if required
 pub fn init() -> HugoBuilder {
     // fetch binary from github
     let url = format!("https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_{ARCH}.tar.gz");
     let out_dir = std::env::var("OUT_DIR").unwrap();
     let out_path = Path::new(&out_dir);
+    // use profile path to store executable
+    // e.g. ./target/debug/build/hugo
+    let out_path = out_path.parent().unwrap().parent().unwrap();
     let mut binary_name = out_path.join("hugo");
 
     // check for already downloaded binary
