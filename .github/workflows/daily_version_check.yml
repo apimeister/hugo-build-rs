@@ -20,7 +20,8 @@ jobs:
         echo $CRATE_VERSION
     - name: replace version
       run: |
-        sed -i '' 's/version \= \"$CRATE_VERSION\"/version \= \"HUGO_VERSION\"/' Cargo.toml
+        sed -i "s/version \= \"$CRATE_VERSION\"/version \= \"$HUGO_VERSION\"/" Cargo.toml
+        cat Cargo.toml
     - name: Build release artifact
       uses: actions-rs/cargo@v1
       with:
