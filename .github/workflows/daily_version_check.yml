@@ -18,7 +18,7 @@ jobs:
         echo $HUGO_VERSION
     - name: crate version
       run: |
-        CRATE_VERSION=grep '^version =' Cargo.toml | cut -d'"' -f 2
+        CRATE_VERSION=`grep '^version =' Cargo.toml | cut -d'"' -f 2`
         echo "CRATE_VERSION=$CRATE_VERSION" >> $GITHUB_ENV
         echo $CRATE_VERSION
     - name: replace version
