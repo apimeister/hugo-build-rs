@@ -22,13 +22,16 @@ jobs:
         echo "CRATE_VERSION=$CRATE_VERSION" >> $GITHUB_ENV
         echo $CRATE_VERSION
     - name: replace version
+      if: env.CRATE_VERSION != env.HUGO_VERSION
       run: |
         sed -i "s/version \= \"$CRATE_VERSION\"/version \= \"$HUGO_VERSION\"/" Cargo.toml
         cat Cargo.toml
     - name: Build artifact
+      if: env.CRATE_VERSION != env.HUGO_VERSION
       uses: actions-rs/cargo@v1
       with:
         command: build
     - uses: stefanzweifel/git-auto-commit-action@v5
+      if: env.CRATE_VERSION != env.HUGO_VERSION
       with:
         commit_message: Version bump.
