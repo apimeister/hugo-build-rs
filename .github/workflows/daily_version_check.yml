@@ -37,3 +37,7 @@ jobs:
       if: env.CRATE_VERSION != env.HUGO_VERSION
       with:
         commit_message: Version bump.
+    - run: cargo publish
+      if: env.CRATE_VERSION != env.HUGO_VERSION
+      env:
+        CARGO_REGISTRY_TOKEN: {{secrets.CARGO_REGISTRY_TOKEN}}
