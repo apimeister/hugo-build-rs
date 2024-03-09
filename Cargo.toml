@@ -8,6 +8,7 @@ keywords = ["hugo","build-dependencies"]
 repository = "https://github.com/apimeister/hugo-build-rs/"
 documentation = "https://docs.rs/hugo_build"
 description = "A wrapper around the hugo binary to proving building capabilities."
+rust-version = "1.65"
 
 [dependencies]
 reqwest = {version = "0.11", features = ["blocking"] }
