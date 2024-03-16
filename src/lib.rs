@@ -64,7 +64,7 @@ pub fn init() -> HugoBuilder {
     if !binary_exists {
         // download fresh binary
         let result = reqwest::blocking::get(url).unwrap();
-        let bytes = result.bytes().unwrap();
+        let bytes = result.bytes().expect("downloading the hugo binary failed");
         let decompressor = GzDecoder::new(&bytes[..]);
         let mut archive = Archive::new(decompressor);
         for entry in archive.entries().unwrap() {
