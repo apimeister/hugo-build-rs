@@ -5,6 +5,7 @@ edition = "2021"
 authors = ["Jens Walter <jens@apimeister.com>"]
 license = "Apache-2.0"
 keywords = ["hugo","build-dependencies"]
+categories = ["development-tools::build-utils"]
 repository = "https://github.com/apimeister/hugo-build-rs/"
 documentation = "https://docs.rs/hugo_build"
 description = "A wrapper around the hugo binary to proving building capabilities."
