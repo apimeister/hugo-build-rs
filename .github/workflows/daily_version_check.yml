@@ -37,6 +37,7 @@ jobs:
       if: env.CRATE_VERSION != env.HUGO_VERSION
       with:
         commit_message: Version bump.
+        tagging_message: "v{{ env.CRATE_VERSION }}"
     - run: cargo publish
       if: env.CRATE_VERSION != env.HUGO_VERSION
       env:
