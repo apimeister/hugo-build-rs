@@ -33,7 +33,7 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: build
-    - uses: stefanzweifel/git-auto-commit-action@v5
+    - uses: stefanzweifel/git-auto-commit-action@v6
       if: env.CRATE_VERSION != env.HUGO_VERSION
       with:
         commit_message: Version bump.
