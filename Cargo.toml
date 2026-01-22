@@ -15,3 +15,5 @@ rust-version = "1.83"
 reqwest = {version = "0.13", features = ["blocking"] }
 tar = "0.4"
 flate2 = "1"
+apple-xar = { version = "0.20", default-features=false}
+cpio-archive = "0.10"

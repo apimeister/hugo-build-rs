@@ -16,10 +16,28 @@ fn fetch() {
         let mut file = entry.unwrap();
         println!("file: {:?}", file.path());
         println!("bytes: {:?}", file.size());
-        let mut local_file = File::create("1").unwrap();
+        let mut local_file = File::create("target/test-extract").unwrap();
         let mut bytes: Vec<u8> = vec![];
         let result = file.read_to_end(&mut bytes).unwrap();
         println!("read: {result} expected: {}", file.size());
         local_file.write_all(&bytes).unwrap();
     }
+}
+
+#[test]
+fn lifecycle() {
+    unsafe {
+        std::env::set_var("OUT_DIR", "./target/hugo");
+        std::fs::create_dir_all("./target/hugo").unwrap();
+    }
+    use std::path::Path;
+    let source = Path::new("target/hugo-input");
+    let output = Path::new("target/hugo-output");
+    std::fs::create_dir_all(source).unwrap();
+    std::fs::create_dir_all(output).unwrap();
+    crate::init()
+        .with_input(source.to_path_buf())
+        .with_output(output.to_path_buf())
+        .build()
+        .unwrap();
 }
