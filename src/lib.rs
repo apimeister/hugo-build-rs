@@ -30,6 +30,14 @@ static ARCH: &str = "windows-amd64";
 
 static VERSION: &str = std::env!("CARGO_PKG_VERSION");
 
+fn sanitize_version(version: &str) -> String {
+    if let Some(index) = version.find("-") {
+        version[..index].to_string()
+    } else {
+        version.to_string()
+    }
+}
+
 fn binary_filename() -> &'static str {
     if cfg!(target_os = "windows") {
         "hugo.exe"
@@ -50,13 +58,14 @@ fn fix_permissions(local_file: &File) {
 ///
 /// fetches the binary from github if required
 pub fn init() -> HugoBuilder {
+    let version = sanitize_version(VERSION);
     // fetch binary from github
     let url = match ARCH {
         "darwin-universal" => format!(
-            "https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_darwin-universal.pkg"
+            "https://github.com/gohugoio/hugo/releases/download/v{version}/hugo_extended_{version}_darwin-universal.pkg"
         ),
         _ => format!(
-            "https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_{ARCH}.tar.gz"
+            "https://github.com/gohugoio/hugo/releases/download/v{version}/hugo_extended_{version}_{ARCH}.tar.gz"
         ),
     };
     let out_dir = std::env::var("OUT_DIR").unwrap();

@@ -1,6 +1,6 @@
 [package]
 name = "hugo-build"
-version = "0.154.5-hf1"
+version = "0.154.5-hf2"
 edition = "2024"
 authors = ["Jens Walter <jens@apimeister.com>"]
 license = "Apache-2.0"

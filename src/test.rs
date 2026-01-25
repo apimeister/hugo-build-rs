@@ -6,6 +6,16 @@ use std::{
 use tar::Archive;
 
 #[test]
+fn sanitize_version_strips_hotfix_suffix() {
+    assert_eq!(crate::sanitize_version("0.154.5-hf1"), "0.154.5");
+}
+
+#[test]
+fn sanitize_version_keeps_release_version() {
+    assert_eq!(crate::sanitize_version("0.154.5"), "0.154.5");
+}
+
+#[test]
 fn fetch() {
     let url = "https://github.com/gohugoio/hugo/releases/download/v0.115.1/hugo_extended_0.115.1_darwin-universal.tar.gz";
     let result = reqwest::blocking::get(url).unwrap();
