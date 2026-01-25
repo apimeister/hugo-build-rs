@@ -52,8 +52,12 @@ fn fix_permissions(local_file: &File) {
 pub fn init() -> HugoBuilder {
     // fetch binary from github
     let url = match ARCH {
-        "darwin-universal" => format!("https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_darwin-universal.pkg"),
-_=>        format!("https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_{ARCH}.tar.gz"),
+        "darwin-universal" => format!(
+            "https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_darwin-universal.pkg"
+        ),
+        _ => format!(
+            "https://github.com/gohugoio/hugo/releases/download/v{VERSION}/hugo_extended_{VERSION}_{ARCH}.tar.gz"
+        ),
     };
     let out_dir = std::env::var("OUT_DIR").unwrap();
     let out_path = Path::new(&out_dir);
